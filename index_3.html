@@ -97,20 +97,23 @@
 	
 		<!-- HERO -->
 		<div class="edina_tm_section" id="home">
+			<div id="particles-js"></div>
 			<div class="edina_tm_hero_header">
 				<div class="edina_tm_universal_box_wrap">
 					<div class="bg_wrap">
-						<div class="overlay_image hero jarallax" data-speed="0"></div>
-						<div class="overlay_video"></div>
-						<div class="overlay_color hero"></div>
+						<div class="overlay_video">
+							 <a id="video" class="youtube-bg" data-property="{videoURL:'https://www.youtube.com/watch?v=QwszX3r3KiM',containment:'#home', showControls:false, autoPlay:true, loop:true, mute:true, startAt:0, opacity:1, quality:'default'}"></a>
+						</div>
+						<div class="overlay_color video"></div>
 					</div>
 					<div class="content hero">
 						<div class="container hero">
-							<div class="hero_title">
-								<img src="img/hero/image.png" alt="" />
+							<div class="hero_title homepage_third">
+								<h3>I'm John Back</h3>
+								<span>Web Developer</span>
 							</div>
 						</div>
-						<div class="edina_tm_discover_wrap anchor">
+						<div class="edina_tm_discover_wrap homepage_third anchor">
 							<span>
 								<a href="#about">Discover</a>
 							</span>
@@ -132,7 +135,7 @@
 						<span>About Me</span>
 					</div>
 				</div>
-				<div class="edina_tm_about_wrap">
+				<div class="edina_tm_about_wrap homepage_second">
 					<div class="author_wrap">
 						<div class="leftbox"></div>
 						<div class="rightbox">
@@ -643,11 +646,13 @@
 			</div>
 			<div class="edina_tm_contact_wrap">
 				<div class="short_info">
+					<div class="short_info">
 					<div class="container">
 						<div class="subtitle">
 							<p class="wow fadeIn" data-wow-duration="1.2s">Any question? Reach out to me and I will get back to you shortly.</p>
 						</div>
 					</div>
+				</div>
 				</div>
 				<div class="main_input_wrap">
 					<form action="/" method="post" class="contact_form" id="contact_form">
