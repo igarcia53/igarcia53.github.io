@@ -1234,27 +1234,43 @@ img.svg {
 }
 
 .edina_tm_portfolio_list > li:nth-child(1) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/1.jpg);
+    background-image: url(..//img/portfolio/campus_uarm.png);
 }
 
 .edina_tm_portfolio_list > li:nth-child(2) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/2.jpg);
+    background-image: url(..//img/portfolio/campus_cesap.png);
 }
 
 .edina_tm_portfolio_list > li:nth-child(3) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/3.jpg);
+    background-image: url(..//img/portfolio/campus_ipd.png);
 }
 
 .edina_tm_portfolio_list > li:nth-child(4) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/4.jpg);
+    background-image: url(..//img/portfolio/campus_senamhi.png);
 }
 
 .edina_tm_portfolio_list > li:nth-child(5) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/5.jpg);
+    background-image: url(..//img/portfolio/articulate_minedu.png);
 }
 
 .edina_tm_portfolio_list > li:nth-child(6) .image_wrap .main_image {
-    background-image: url(..//img/portfolio/6.jpg);
+    background-image: url(..//img/portfolio/articulate_yanbal.png);
+}
+
+.edina_tm_portfolio_list > li:nth-child(7) .image_wrap .main_image {
+    background-image: url(..//img/portfolio/desarrollo_intra.png);
+}
+
+.edina_tm_portfolio_list > li:nth-child(8) .image_wrap .main_image {
+    background-image: url(..//img/portfolio/desarrollo_hd.png);
+}
+
+.edina_tm_portfolio_list > li:nth-child(9) .image_wrap .main_image {
+    background-image: url(..//img/portfolio/desarrollo_pre.png);
+}
+
+.edina_tm_portfolio_list > li:nth-child(10) .image_wrap .main_image {
+    background-image: url(..//img/portfolio/desarrollo_chora.png);
 }
 
 .edina_tm_portfolio_list .list_inner .definition_portfolio {
