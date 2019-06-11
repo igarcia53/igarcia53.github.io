@@ -454,7 +454,7 @@ function edina_tm_animate_text() {
     var animateSpan = jQuery('.edina_tm_animation_text_word');
 
     animateSpan.typed({
-        strings: ["Ing. de Sistemas (estudiante)", "MCCC", "PHP", "Java", "SQLServer", "MySQL", "Laravel", "Articulate Storyline", "Power Bi"],
+        strings: ["Ing. de Sistemas (bachiller)", "MCCC", "PHP", "Java", "SQLServer", "MySQL", "Laravel", "Articulate Storyline", "Power Bi"],
         loop: true,
         startDelay: 1e3,
         backDelay: 2e3

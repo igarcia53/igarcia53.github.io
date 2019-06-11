@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bb83bf2a-f1c1-4866-97cd-b0dc97cbb8c1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/init.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/init.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,15 +12,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+    <leaf>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="554">
-              <caret line="498" column="41" selection-start-line="498" selection-start-column="41" selection-end-line="498" selection-end-column="41" />
+            <state relative-caret-position="350">
+              <caret line="499" column="24" selection-start-line="499" selection-start-column="24" selection-end-line="499" selection-end-column="24" />
               <folding>
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#div#0;n#li#1;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#1;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#2;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#3;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -44,6 +42,15 @@
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#21;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#li#22;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/init.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="233">
+              <caret line="456" column="46" selection-start-line="456" selection-start-column="46" selection-end-line="456" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -82,8 +89,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/js/init.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/init.js" />
       </list>
     </option>
   </component>
@@ -97,6 +104,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -104,16 +112,10 @@
               <item name="igarcia53.github.io" type="b2602c69:ProjectViewProjectNode" />
               <item name="igarcia53.github.io" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="igarcia53.github.io" type="b2602c69:ProjectViewProjectNode" />
-              <item name="igarcia53.github.io" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,12 +159,13 @@
       <workItem from="1559165145170" duration="329000" />
       <workItem from="1559226850741" duration="169000" />
       <workItem from="1559227034291" duration="5824000" />
-      <workItem from="1559852695353" duration="467000" />
+      <workItem from="1559852695353" duration="624000" />
+      <workItem from="1560269344646" duration="56000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7831000" />
+    <option name="totallyTimeSpent" value="8044000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="590" y="0" width="1332" height="1047" extended-state="0" />
@@ -202,18 +205,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index_3.html" />
     <entry file="file://$PROJECT_DIR$/index_2.html" />
-    <entry file="file://$PROJECT_DIR$/img/logo/logo.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/logo/code-flat.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/logo/dribbble1.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/hero/1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/img/logo/logo.png" />
+    <entry file="file://$PROJECT_DIR$/img/logo/code-flat.png" />
+    <entry file="file://$PROJECT_DIR$/img/logo/dribbble1.png" />
+    <entry file="file://$PROJECT_DIR$/img/hero/1.jpg" />
     <entry file="file://$PROJECT_DIR$/img/hero/DSC_0155.JPG" />
     <entry file="file://$PROJECT_DIR$/img/hero/DSC_0143.JPG">
       <provider selected="true" editor-type-id="images" />
@@ -276,20 +271,12 @@
     <entry file="file://$PROJECT_DIR$/data/escanear0012.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/init.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="460" column="7" lean-forward="true" selection-start-line="460" selection-start-column="7" selection-end-line="460" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="554">
-          <caret line="498" column="41" selection-start-line="498" selection-start-column="41" selection-end-line="498" selection-end-column="41" />
+        <state relative-caret-position="350">
+          <caret line="499" column="24" selection-start-line="499" selection-start-column="24" selection-end-line="499" selection-end-column="24" />
           <folding>
             <element signature="n#style#0;n#a#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#div#0;n#li#1;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#li#1;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#li#2;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#li#3;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -312,6 +299,13 @@
             <element signature="n#style#0;n#a#0;n#div#0;n#li#21;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#li#22;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/init.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="456" column="46" selection-start-line="456" selection-start-column="46" selection-end-line="456" selection-end-column="46" />
         </state>
       </provider>
     </entry>
