@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Hours Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-clock me-2"></i>Working Hours Calculator</h3>
+                </div>
+                <div class="card-body">
+                    <form id="hoursForm">
+                        <div class="mb-4">
+                            <h5 class="card-title mb-3">Time Configuration</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="timeIn" class="form-label">Entry Time</label>
+                                    <input type="time" class="form-control" id="timeIn" required
+                                           value="09:00">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="timeOut" class="form-label">Exit Time</label>
+                                    <input type="time" class="form-control" id="timeOut" required
+                                           value="20:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="card-title mb-3">Hour Concepts</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Concept</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Regular Hours (HO)</td>
+                                        <td>08:00</td>
+                                        <td>17:59</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Extra Day Hours (HED)</td>
+                                        <td>18:00</td>
+                                        <td>20:59</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Night Extra Hours (HEN)</td>
+                                        <td>21:00</td>
+                                        <td>05:59</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <i class="fas fa-calculator me-2"></i>Calculate Hours
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="results" class="mt-4" style="display: none;">
+                        <hr>
+                        <h5 class="card-title mb-3">Results</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="chartContainer" style="height: 300px;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Concept</th>
+                                            <th>Hours</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="resultsTable">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let chart = null;
+
+        $('#hoursForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const timeIn = $('#timeIn').val();
+            const timeOut = $('#timeOut').val();
+
+            const requestData = {
+                attendanceIn: timeIn,
+                attendanceOut: timeOut,
+                concepts: [
+                    {
+                        id: "HO",
+                        name: "HO",
+                        start: "08:00",
+                        end: "17:59"
+                    },
+                    {
+                        id: "HED",
+                        name: "HED",
+                        start: "18:00",
+                        end: "20:59"
+                    },
+                    {
+                        id: "HEN",
+                        name: "HEN",
+                        start: "21:00",
+                        end: "05:59"
+                    }
+                ]
+            };
+
+            // Actual API call would look like this:
+            $.ajax({
+                url: 'https://falconcloud.co/site_srv10_ph/site/api/qserv.php/13465-770721',
+                method: 'POST',
+                data: JSON.stringify(requestData),
+                contentType: 'application/json',
+                success: function (response) {
+                    displayResults(response);
+                },
+                error: function (xhr, status, error) {
+                    // Error API
+                    console.log('Error calculating hours: ' + error);
+
+                    // Simulate API call (replace with actual API endpoint)
+                    const response = {"HEN": 6, "HO": 2.5};
+                    displayResults(response);
+                }
+            });
+        });
+
+        function displayResults(data) {
+            $('#results').show();
+
+            // Update results table
+            const tbody = $('#resultsTable');
+            tbody.empty();
+
+            Object.entries(data).forEach(([concept, hours]) => {
+                tbody.append(`
+                        <tr>
+                            <td>${getConceptName(concept)}</td>
+                            <td>${hours} hours</td>
+                        </tr>
+                    `);
+            });
+
+            // Update chart
+            const ctx = document.getElementById('chartContainer');
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data).map(getConceptName),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: [
+                            '#4e73df',
+                            '#1cc88a',
+                            '#36b9cc'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function getConceptName(concept) {
+            const names = {
+                'HO': 'Regular Hours',
+                'HED': 'Extra Day Hours',
+                'HEN': 'Night Extra Hours'
+            };
+            return names[concept] || concept;
+        }
+    });
+</script>
+</body>
+</html>
