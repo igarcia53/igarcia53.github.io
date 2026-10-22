@@ -1,0 +1,55 @@
+---
+import PageHeader from '../../components/PageHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCourses, getLessons } from '../../lib/content';
+import { levelLabel } from '../../lib/format';
+
+const courses = await getCourses();
+const cards = await Promise.all(
+  courses.map(async (course) => ({
+    course,
+    lessons: await getLessons(course.id),
+  })),
+);
+---
+
+<BaseLayout
+  title="EdTech"
+  description="Guías y laboratorios sobre LMS, componentes de Moodle e integraciones entre sistemas."
+>
+  <PageHeader
+    eyebrow="LMS"
+    title="EdTech"
+    description="Guías y laboratorios para ordenar el trabajo sobre plataformas de aprendizaje. El avance de cada lección se guarda solo en este navegador."
+  />
+  <div class="mx-auto max-w-5xl px-5 py-12">
+    <ul class="grid gap-4">
+      {
+        cards.map(({ course, lessons }) => (
+          <li>
+            <a href={`/learn/${course.id}/`} class="block rounded-lg border border-line p-5 hover:border-accent">
+              <p class="font-mono text-xs tracking-wide text-muted uppercase">
+                {levelLabel[course.data.level]}
+                {course.data.duration ? ` · ${course.data.duration}` : ''}
+                {` · ${lessons.length} ${lessons.length === 1 ? 'lección' : 'lecciones'}`}
+              </p>
+              <h2 class="mt-2 text-2xl font-semibold tracking-tight">{course.data.title}</h2>
+              <p class="mt-2 max-w-3xl text-pretty text-muted">{course.data.summary}</p>
+              {
+                course.data.tags.length > 0 && (
+                  <ul class="mt-4 flex flex-wrap gap-2">
+                    {course.data.tags.map((tag) => (
+                      <li class="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] tracking-wide text-muted uppercase">
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>

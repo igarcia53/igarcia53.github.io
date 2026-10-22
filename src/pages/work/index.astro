@@ -1,0 +1,54 @@
+---
+import { render } from 'astro:content';
+import PageHeader from '../../components/PageHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getJobs } from '../../lib/content';
+import { formatPeriod } from '../../lib/format';
+
+const jobs = await getJobs();
+const rendered = await Promise.all(
+  jobs.map(async (job) => {
+    const { Content } = await render(job);
+    return { job, Content };
+  }),
+);
+---
+
+<BaseLayout
+  title="Trayectoria"
+  description="Experiencia de Ivan Garcia Vega en LMS, desarrollo PHP y plataformas educativas."
+>
+  <PageHeader
+    eyebrow="Trabajo"
+    title="Trayectoria"
+    description="Roles publicados en el sitio anterior, del más reciente al más antiguo. Las fechas conservan la precisión de mes."
+  />
+  <div class="mx-auto max-w-5xl px-5 py-12">
+    <ol class="space-y-10">
+      {
+        rendered.map(({ job, Content }) => (
+          <li class="relative border-l border-line pl-6">
+            <span class="absolute top-2 left-0 size-2 -translate-x-1/2 rounded-full bg-accent" aria-hidden="true" />
+            <p class="font-mono text-xs tracking-wide text-muted uppercase">
+              {formatPeriod(job.data.startDate, job.data.endDate)}
+            </p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tight">{job.data.title}</h2>
+            <p class="text-accent">{job.data.company}</p>
+            {job.data.tags.length > 0 && (
+              <ul class="mt-3 flex flex-wrap gap-2">
+                {job.data.tags.map((tag) => (
+                  <li class="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] tracking-wide text-muted uppercase">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div class="prose mt-4 max-w-3xl">
+              <Content />
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</BaseLayout>

@@ -1,6 +1,6 @@
 # Portafolio de Ivan Garcia Vega
 
-Sitio personal en reconstrucción con Astro 5, salida estática. La versión publicada anterior queda archivada en `legacy-v1/` y queda fuera del build nuevo.
+Sitio personal en Astro 5, salida estática. La versión publicada anterior queda en `legacy-v1/` y el build la copia a `dist/legacy-v1/` para que siga disponible en `/legacy-v1`.
 
 ## Requisitos
 
@@ -11,10 +11,21 @@ Node.js 22 o superior.
 ```bash
 npm install
 npm run dev      # http://localhost:4321
-npm run build    # genera dist/
+npm run build    # genera dist/ y copia legacy-v1
 npm run preview  # sirve dist/ en local
 ```
 
+## Contenido
+
+Las colecciones viven en `src/content/` y se validan en `src/content.config.ts`.
+
+- `work`: trayectoria
+- `projects`: proyectos. `draft: true` no genera página
+- `blog`: notas. `draft: true` queda fuera del listado y del RSS
+- `courses` y `lessons`: hub EdTech en `/learn`
+
+Las etiquetas tienen página propia (`/projects/etiqueta/...` y `/blog/etiqueta/...`). No hay buscador: el archivo publicado no justifica un índice aparte.
+
 ## Deploy
 
-El push a `master` queda reservado para la fase de deploy. El workflow actual de GitHub Pages publica la raíz del repositorio; subirlo ahora reemplazaría https://igarcia53.github.io/ por este esqueleto y por los archivos fuente.
+El workflow de GitHub Actions, en cada push a `master`, instala dependencias, ejecuta `npm run build` y publica solo `dist/` en GitHub Pages. La raíz del sitio nuevo reemplaza https://igarcia53.github.io/ y el archivo anterior queda en https://igarcia53.github.io/legacy-v1/.

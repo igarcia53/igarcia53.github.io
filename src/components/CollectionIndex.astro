@@ -1,0 +1,47 @@
+---
+import EntryCard from './EntryCard.astro';
+import TagFilter from './TagFilter.astro';
+import { formatDate } from '../lib/format';
+
+interface Item {
+  href: string;
+  title: string;
+  summary: string;
+  date: Date;
+  tags: string[];
+}
+
+interface Props {
+  items: Item[];
+  tags: string[];
+  base: string;
+  activeTag?: string;
+  noun: { one: string; many: string };
+  empty: string;
+}
+
+const { items, tags, base, activeTag, noun, empty } = Astro.props;
+const count = `${items.length} ${items.length === 1 ? noun.one : noun.many}`;
+---
+
+<div class="mx-auto max-w-5xl px-5 py-10">
+  {tags.length > 0 && <TagFilter tags={tags} base={base} active={activeTag} />}
+  <p class="mt-8 font-mono text-xs tracking-wide text-muted uppercase">{count}</p>
+  {
+    items.length === 0 ? (
+      <p class="mt-6 text-muted">{empty}</p>
+    ) : (
+      <ul class="mt-4 grid gap-4">
+        {items.map((item) => (
+          <EntryCard
+            href={item.href}
+            title={item.title}
+            summary={item.summary}
+            meta={formatDate(item.date)}
+            tags={item.tags}
+          />
+        ))}
+      </ul>
+    )
+  }
+</div>

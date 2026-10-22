@@ -1,0 +1,30 @@
+---
+import CollectionIndex from '../../components/CollectionIndex.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { collectTags, getPosts } from '../../lib/content';
+
+const posts = await getPosts();
+const items = posts.map((post) => ({
+  href: `/blog/${post.id}/`,
+  title: post.data.title,
+  summary: post.data.summary,
+  date: post.data.date,
+  tags: post.data.tags,
+}));
+---
+
+<BaseLayout title="Blog" description="Notas sobre herramientas y práctica de desarrollo.">
+  <PageHeader
+    eyebrow="Notas"
+    title="Blog"
+    description="Notas sobre herramientas y práctica de desarrollo."
+  />
+  <CollectionIndex
+    items={items}
+    tags={collectTags(posts)}
+    base="/blog"
+    noun={{ one: 'publicación', many: 'publicaciones' }}
+    empty="No hay publicaciones."
+  />
+</BaseLayout>

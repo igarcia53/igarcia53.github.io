@@ -1,0 +1,39 @@
+---
+import { tagSlug } from '../lib/format';
+
+interface Props {
+  tags: string[];
+  base: string;
+  active?: string;
+}
+
+const { tags, base, active } = Astro.props;
+
+function chip(current: boolean): string {
+  return current
+    ? 'rounded-full bg-ink px-3 py-1 text-sm text-paper'
+    : 'rounded-full border border-line px-3 py-1 text-sm text-muted hover:text-ink';
+}
+---
+
+<div>
+  <h2 class="font-mono text-xs tracking-widest text-muted uppercase">Filtrar</h2>
+  <ul class="mt-3 flex flex-wrap gap-2">
+    <li>
+      <a href={`${base}/`} class={chip(!active)} aria-current={!active ? 'true' : undefined}>Todos</a>
+    </li>
+    {
+      tags.map((tag) => {
+        const slug = tagSlug(tag);
+        const current = slug === active;
+        return (
+          <li>
+            <a href={`${base}/etiqueta/${slug}/`} class={chip(current)} aria-current={current ? 'true' : undefined}>
+              {tag}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>

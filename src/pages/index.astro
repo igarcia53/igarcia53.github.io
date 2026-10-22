@@ -1,10 +1,210 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryCard from '../components/EntryCard.astro';
+import { site, skills } from '../data/site';
+import { getCourses, getJobs, getLessons, getPosts, getProjects } from '../lib/content';
+import { formatDate, formatPeriod, levelLabel } from '../lib/format';
+
+const projects = await getProjects();
+const posts = await getPosts();
+const jobs = await getJobs();
+const courses = await getCourses();
+const featured = projects.filter((project) => project.data.featured);
+const projectPreview = (featured.length > 0 ? featured : projects).slice(0, 3);
+const postPreview = posts.slice(0, 3);
+const jobPreview = jobs.slice(0, 4);
+
+const courseCards = await Promise.all(
+  courses.map(async (course) => {
+    const lessons = await getLessons(course.id);
+    return { course, count: lessons.length };
+  }),
+);
 ---
 
-<BaseLayout title="Ivan Garcia Vega">
-  <main class="font-sans">
-    <h1>Ivan Garcia Vega</h1>
-    <p>Ingeniero de sistemas. Este portafolio está en reconstrucción.</p>
-  </main>
+<BaseLayout title={site.name} description={site.description}>
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-5xl px-5 py-16 md:py-24">
+      <p class="font-mono text-xs tracking-widest text-accent uppercase">Sistemas, LMS y EdTech</p>
+      <h1 class="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
+        {site.name}
+      </h1>
+      <p class="mt-4 text-xl">{site.role}</p>
+      <p class="mt-4 max-w-2xl text-lg text-pretty text-muted">
+        Desarrollo plataformas educativas y las integraciones que las conectan con el resto de la operación:
+        PHP, JavaScript, LMS y bases de datos.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/work/" class="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper">Ver trayectoria</a>
+        <a href="/projects/" class="rounded-full border border-line px-4 py-2 text-sm font-medium">Ver proyectos</a>
+        <a href="/learn/" class="rounded-full border border-line px-4 py-2 text-sm font-medium">EdTech</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-5 py-16" aria-labelledby="enfoque">
+    <h2 id="enfoque" class="text-2xl font-semibold tracking-tight">Enfoque</h2>
+    <div class="mt-6 max-w-3xl space-y-4 text-pretty">
+      <p>
+        Ingeniero en Sistemas Computacionales con más de 10 años de experiencia en el sector e-learning,
+        especializado en el desarrollo de plataformas educativas. Como desarrollador senior Moodle en UVirtual,
+        y con experiencia previa en SAEKO y Cypher Learning como especialista PHP y EdTech Specialist, he
+        aportado soluciones tecnológicas a nivel global. Mi trabajo incluye PHP, Laravel, desarrollo de LMS,
+        bases de datos (MySQL, SQL Server), integración con Ruby y JavaScript, y APIs. Tengo la certificación
+        internacional MCCC en Moodle y he trabajado con herramientas colaborativas como Google Workspace.
+      </p>
+      <p>
+        La trayectoria combina equipos multidisciplinarios y sistemas que tienen que servir tanto a la
+        organización como a quien aprende. Sigo buscando proyectos donde esa experiencia se aplique con
+        criterio.
+      </p>
+    </div>
+    <p class="mt-6">
+      <a
+        href={site.cvPath}
+        class="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Descargar CV
+      </a>
+    </p>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="oficio">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <h2 id="oficio" class="text-2xl font-semibold tracking-tight">Oficio</h2>
+      <p class="mt-3 max-w-2xl text-muted">Herramientas que aparecen en el trabajo publicado.</p>
+      <dl class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          skills.map((group) => (
+            <div class="rounded-lg border border-line p-4">
+              <dt class="font-mono text-xs tracking-widest text-accent uppercase">{group.label}</dt>
+              <dd class="mt-3 text-pretty">{group.items.join(', ')}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-6 text-sm text-muted">Certificación internacional MCCC en Moodle.</p>
+    </div>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="proyectos-recientes">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 id="proyectos-recientes" class="text-2xl font-semibold tracking-tight">Proyectos</h2>
+        <a href="/projects/" class="text-sm text-accent underline underline-offset-4">Todos los proyectos</a>
+      </div>
+      <ul class="mt-6 grid gap-4">
+        {
+          projectPreview.map((project) => (
+            <EntryCard
+              href={`/projects/${project.id}/`}
+              title={project.data.title}
+              summary={project.data.summary}
+              meta={formatDate(project.data.date)}
+              tags={project.data.tags}
+            />
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="trayectoria">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 id="trayectoria" class="text-2xl font-semibold tracking-tight">Trayectoria</h2>
+        <a href="/work/" class="text-sm text-accent underline underline-offset-4">Ver toda</a>
+      </div>
+      <ol class="mt-8 space-y-8">
+        {
+          jobPreview.map((job) => (
+            <li class="border-l border-line pl-6">
+              <p class="font-mono text-xs tracking-wide text-muted uppercase">
+                {formatPeriod(job.data.startDate, job.data.endDate)}
+              </p>
+              <h3 class="mt-2 text-xl font-semibold tracking-tight">{job.data.title}</h3>
+              <p class="text-accent">{job.data.company}</p>
+              {job.data.summary && <p class="mt-2 max-w-3xl text-pretty text-muted">{job.data.summary}</p>}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="edtech">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 id="edtech" class="text-2xl font-semibold tracking-tight">EdTech</h2>
+        <a href="/learn/" class="text-sm text-accent underline underline-offset-4">Abrir el hub</a>
+      </div>
+      <p class="mt-3 max-w-2xl text-muted">Guías y laboratorios para estructurar trabajo sobre LMS e integraciones.</p>
+      <ul class="mt-6 grid gap-4 md:grid-cols-2">
+        {
+          courseCards.map(({ course, count }) => (
+            <li>
+              <a href={`/learn/${course.id}/`} class="block h-full rounded-lg border border-line p-4 hover:border-accent">
+                <p class="font-mono text-xs tracking-wide text-muted uppercase">
+                  {levelLabel[course.data.level]}
+                  {course.data.duration ? ` · ${course.data.duration}` : ''}
+                  {` · ${count} ${count === 1 ? 'lección' : 'lecciones'}`}
+                </p>
+                <h3 class="mt-2 text-lg font-semibold tracking-tight">{course.data.title}</h3>
+                <p class="mt-2 text-sm text-pretty text-muted">{course.data.summary}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="publicaciones">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <h2 id="publicaciones" class="text-2xl font-semibold tracking-tight">Publicaciones</h2>
+        <a href="/blog/" class="text-sm text-accent underline underline-offset-4">Todas las publicaciones</a>
+      </div>
+      <ul class="mt-6 grid gap-4">
+        {
+          postPreview.map((post) => (
+            <EntryCard
+              href={`/blog/${post.id}/`}
+              title={post.data.title}
+              summary={post.data.summary}
+              meta={formatDate(post.data.date)}
+              tags={post.data.tags}
+            />
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="contacto">
+    <div class="mx-auto max-w-5xl px-5 py-16">
+      <h2 id="contacto" class="text-2xl font-semibold tracking-tight">Contacto</h2>
+      <p class="mt-3 text-muted">Puedes escribirme por correo o por las redes que uso.</p>
+      <dl class="mt-6 grid gap-4 sm:grid-cols-[8rem_1fr]">
+        <dt class="text-muted">Correo</dt>
+        <dd>
+          <a class="text-accent underline underline-offset-4" href={`mailto:${site.email}`}>{site.email}</a>
+        </dd>
+        <dt class="text-muted">LinkedIn</dt>
+        <dd>
+          <a class="text-accent underline underline-offset-4" href={site.linkedin} target="_blank" rel="me noopener noreferrer">
+            igarciavega
+          </a>
+        </dd>
+        <dt class="text-muted">Twitter</dt>
+        <dd>
+          <a class="text-accent underline underline-offset-4" href={site.twitter} target="_blank" rel="me noopener noreferrer">
+            ivangarciavega3
+          </a>
+        </dd>
+      </dl>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,0 +1,30 @@
+---
+import CollectionIndex from '../../components/CollectionIndex.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { collectTags, getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+const items = projects.map((project) => ({
+  href: `/projects/${project.id}/`,
+  title: project.data.title,
+  summary: project.data.summary,
+  date: project.data.date,
+  tags: project.data.tags,
+}));
+---
+
+<BaseLayout title="Proyectos" description="Sistemas, campus virtuales e integraciones en los que trabajé.">
+  <PageHeader
+    eyebrow="Portafolio"
+    title="Proyectos"
+    description="Sistemas, campus virtuales e integraciones en los que trabajé."
+  />
+  <CollectionIndex
+    items={items}
+    tags={collectTags(projects)}
+    base="/projects"
+    noun={{ one: 'proyecto', many: 'proyectos' }}
+    empty="No hay proyectos publicados."
+  />
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+interface Item {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  newer?: Item;
+  older?: Item;
+}
+
+const { newer, older } = Astro.props;
+---
+
+{
+  (newer || older) && (
+    <nav aria-label="Entradas relacionadas" class="mt-12 grid gap-4 sm:grid-cols-2">
+      {newer && (
+        <a href={newer.href} class="rounded-lg border border-line p-4 hover:border-accent">
+          <span class="font-mono text-xs tracking-wide text-muted uppercase">Más reciente</span>
+          <span class="mt-2 block font-semibold">{newer.title}</span>
+        </a>
+      )}
+      {older && (
+        <a
+          href={older.href}
+          class:list={[
+            'rounded-lg border border-line p-4 hover:border-accent sm:text-right',
+            !newer && 'sm:col-start-2',
+          ]}
+        >
+          <span class="font-mono text-xs tracking-wide text-muted uppercase">Anterior</span>
+          <span class="mt-2 block font-semibold">{older.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}

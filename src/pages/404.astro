@@ -1,0 +1,15 @@
+---
+import PageHeader from '../components/PageHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada"
+  description="La ruta no existe en este sitio."
+  robots="noindex, follow"
+>
+  <PageHeader title="Página no encontrada" description="El enlace no corresponde a una página publicada." />
+  <p class="mx-auto max-w-5xl px-5 py-10">
+    <a href="/" class="text-accent underline underline-offset-4">Volver al inicio</a>
+  </p>
+</BaseLayout>

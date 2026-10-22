@@ -1,0 +1,35 @@
+---
+interface Props {
+  lessonId?: string;
+  lessonIds?: string[];
+}
+
+const { lessonId, lessonIds = [] } = Astro.props;
+---
+
+{
+  lessonId && (
+    <button
+      type="button"
+      data-progress-toggle
+      data-lesson-id={lessonId}
+      aria-pressed="false"
+      class="rounded-full border border-line px-4 py-2 text-sm aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-accent-contrast"
+    >
+      Marcar como completada
+    </button>
+  )
+}
+{
+  lessonIds.length > 0 && (
+    <p data-progress-summary data-lesson-ids={lessonIds.join(',')} class="text-sm text-muted">
+      <span data-progress-count>0</span> de {lessonIds.length} lecciones completadas en este navegador.
+    </p>
+  )
+}
+<noscript>
+  <p class="mt-2 text-sm text-muted">El avance se guarda en este navegador y necesita JavaScript.</p>
+</noscript>
+<script>
+  import '../scripts/learn-progress.ts';
+</script>

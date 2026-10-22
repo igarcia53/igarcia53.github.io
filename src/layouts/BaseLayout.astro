@@ -1,27 +1,143 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { site } from '../data/site';
+
+interface ArticleMeta {
+  headline: string;
+  description: string;
+  datePublished: Date;
+}
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  ogType?: 'website' | 'article';
+  robots?: string;
+  article?: ArticleMeta;
 }
 
 const {
-  title = 'Ivan Garcia Vega',
-  description = 'Portafolio de Ivan Garcia Vega.',
+  title = site.name,
+  description = site.description,
+  image = site.ogImage,
+  ogType = 'website',
+  robots = 'index, follow',
+  article,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+const fullTitle = title === site.name ? site.name : `${title} | ${site.name}`;
+const personId = new URL('/#ivan', Astro.site).href;
+const rssUrl = new URL('/rss.xml', Astro.site);
+
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'WebSite',
+    name: site.name,
+    url: site.url,
+    description: site.description,
+    inLanguage: site.locale,
+  },
+  {
+    '@type': 'Person',
+    '@id': personId,
+    name: site.name,
+    jobTitle: site.role,
+    description: site.description,
+    url: site.url,
+    email: site.email,
+    sameAs: [site.linkedin, site.twitter],
+    knowsAbout: ['Moodle', 'LMS', 'PHP', 'JavaScript', 'MySQL', 'APIs'],
+  },
+];
+
+if (article) {
+  graph.push({
+    '@type': 'BlogPosting',
+    headline: article.headline,
+    description: article.description,
+    datePublished: article.datePublished.toISOString(),
+    author: { '@id': personId },
+    image: imageUrl.href,
+    mainEntityOfPage: canonical.href,
+    inLanguage: site.locale,
+  });
+}
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': graph,
+}).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={site.locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3f0e8" />
+    <script is:inline>
+      (function () {
+        var theme = 'light';
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') theme = stored;
+          else if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+        } catch (error) {
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+        }
+        var root = document.documentElement;
+        root.classList.toggle('dark', theme === 'dark');
+        root.classList.toggle('light', theme === 'light');
+        root.style.colorScheme = theme;
+        root.style.backgroundColor = theme === 'dark' ? '#121412' : '#f3f0e8';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#121412' : '#f3f0e8');
+      })();
+    </script>
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <title>{title}</title>
+    <meta name="robots" content={robots} />
+    <title>{fullTitle}</title>
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`Blog de ${site.name}`} href={rssUrl.href} />
+    <meta property="og:type" content={article ? 'article' : ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="es" />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl.href} />
+    {
+      article && (
+        <meta property="article:published_time" content={article.datePublished.toISOString()} />
+      )
+    }
+    <script type="application/ld+json" is:inline set:html={jsonLd} />
   </head>
-  <body>
-    <slot />
+  <body class="bg-paper font-sans text-ink antialiased">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+    >
+      Saltar al contenido
+    </a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

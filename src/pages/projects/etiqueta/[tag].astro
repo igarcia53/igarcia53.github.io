@@ -1,0 +1,41 @@
+---
+import CollectionIndex from '../../../components/CollectionIndex.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { collectTags, filterByTag, getProjects } from '../../../lib/content';
+import { tagSlug } from '../../../lib/format';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return collectTags(projects).map((tag) => ({
+    params: { tag: tagSlug(tag) },
+    props: { tag },
+  }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const projects = filterByTag(await getProjects(), tagSlug(tag));
+const items = projects.map((project) => ({
+  href: `/projects/${project.id}/`,
+  title: project.data.title,
+  summary: project.data.summary,
+  date: project.data.date,
+  tags: project.data.tags,
+}));
+---
+
+<BaseLayout title={`Proyectos: ${tag}`} description={`Proyectos etiquetados con ${tag}.`}>
+  <PageHeader eyebrow="Portafolio" title={tag} description={`Proyectos etiquetados con ${tag}.`} />
+  <CollectionIndex
+    items={items}
+    tags={collectTags(await getProjects())}
+    base="/projects"
+    activeTag={tagSlug(tag)}
+    noun={{ one: 'proyecto', many: 'proyectos' }}
+    empty="No hay proyectos con esta etiqueta."
+  />
+</BaseLayout>

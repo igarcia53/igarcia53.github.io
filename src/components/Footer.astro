@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+const profiles = [
+  { href: `mailto:${site.email}`, label: 'Correo', external: false },
+  { href: site.linkedin, label: 'LinkedIn', external: true },
+  { href: site.twitter, label: 'Twitter', external: true },
+  { href: '/rss.xml', label: 'RSS', external: false },
+];
+---
+
+<footer class="border-t border-line">
+  <div class="mx-auto grid max-w-5xl gap-8 px-5 py-10 sm:grid-cols-2">
+    <div>
+      <p class="font-semibold">{site.name}</p>
+      <p class="mt-2 max-w-sm text-sm text-muted">
+        {site.role}. Plataformas de aprendizaje, integraciones y operación de LMS.
+      </p>
+    </div>
+    <ul class="flex flex-wrap content-start gap-x-4 gap-y-2 sm:justify-end">
+      {
+        profiles.map((profile) => (
+          <li>
+            <a
+              href={profile.href}
+              class="text-sm text-accent underline underline-offset-4"
+              {...(profile.external ? { target: '_blank', rel: 'me noopener noreferrer' } : {})}
+            >
+              {profile.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href="/legacy-v1/" class="text-sm text-muted underline underline-offset-4">Sitio anterior</a>
+      </li>
+    </ul>
+  </div>
+  <div class="border-t border-line">
+    <p class="mx-auto max-w-5xl px-5 py-4 text-sm text-muted">
+      © {year} {site.name}. Sitio construido con Astro, TypeScript y Tailwind.
+    </p>
+  </div>
+</footer>

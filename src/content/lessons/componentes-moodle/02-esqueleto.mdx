@@ -1,0 +1,41 @@
+---
+title: Esqueleto mínimo en un campus de prueba
+summary: Directorio, version.php e idioma inglés, y la comprobación en la pantalla de notificaciones.
+course: componentes-moodle
+module: Laboratorio
+kind: laboratorio
+order: 2
+duration: 30 min
+---
+
+import Callout from '../../../components/Callout.astro';
+
+Haz este laboratorio en un Moodle de desarrollo. Docker o una máquina local alcanzan. No lo instales primero en el campus que ya tiene estudiantes.
+
+1. Entra al directorio de código de Moodle y crea `local/example`.
+2. Agrega `version.php` con el componente, la versión y la versión mínima del campus.
+3. Agrega `lang/en/local_example.php` con al menos el nombre del plugin.
+4. Inicia sesión como administrador y abre la página de notificaciones para que Moodle registre el componente.
+5. Confirma que aparece en la vista de plugins y que se puede desinstalar.
+
+```php
+<?php
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->component = 'local_example';
+$plugin->version = 2026102100;
+$plugin->requires = 2024100700;
+```
+
+`2024100700` corresponde a Moodle 4.5. Si el campus de prueba usa otra rama, cambia `requires` al valor de esa versión. `version` debe subir cada vez que el esquema o el código cambien.
+
+```php
+<?php
+defined('MOODLE_INTERNAL') || die();
+
+$string['pluginname'] = 'Example';
+```
+
+<Callout title="Antes de pasar a un campus compartido">
+Revisa que la desinstalación no deje menús apuntando al componente y que la cadena en inglés exista. Sin ese archivo, Moodle no termina de registrar el plugin.
+</Callout>

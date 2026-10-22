@@ -1,0 +1,83 @@
+---
+import { render } from 'astro:content';
+import LessonProgress from '../../../components/LessonProgress.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  getCourses,
+  getLessons,
+  lessonPath,
+  lessonSlug,
+  type Lesson,
+} from '../../../lib/content';
+import { kindLabel } from '../../../lib/format';
+
+export async function getStaticPaths() {
+  const courses = await getCourses();
+  const courseIds = new Set(courses.map((course) => course.id));
+  const lessons = await getLessons();
+  return lessons
+    .filter((lesson) => courseIds.has(lesson.data.course))
+    .map((lesson) => ({
+      params: { course: lesson.data.course, lesson: lessonSlug(lesson) },
+      props: { lesson },
+    }));
+}
+
+interface Props {
+  lesson: Lesson;
+}
+
+const { lesson } = Astro.props;
+const courseLessons = await getLessons(lesson.data.course);
+const index = courseLessons.findIndex((item) => item.id === lesson.id);
+const previous = index > 0 ? courseLessons[index - 1] : undefined;
+const next = courseLessons[index + 1];
+const { Content } = await render(lesson);
+---
+
+<BaseLayout title={lesson.data.title} description={lesson.data.summary || lesson.data.title}>
+  <article class="mx-auto max-w-5xl px-5 py-12">
+    <div class="max-w-3xl">
+      <a href={`/learn/${lesson.data.course}/`} class="text-sm text-accent underline underline-offset-4">
+        Volver al módulo
+      </a>
+      <p class="mt-8 font-mono text-xs tracking-wide text-muted uppercase">
+        {kindLabel[lesson.data.kind]}
+        {lesson.data.duration ? ` · ${lesson.data.duration}` : ''}
+        {` · ${lesson.data.module}`}
+      </p>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight text-balance">{lesson.data.title}</h1>
+      {lesson.data.summary && <p class="mt-4 text-lg text-pretty text-muted">{lesson.data.summary}</p>}
+      <div class="mt-6">
+        <LessonProgress lessonId={lesson.id} />
+      </div>
+      <div class="prose mt-8">
+        <Content />
+      </div>
+      <nav aria-label="Lecciones del curso" class="mt-12 grid gap-4 sm:grid-cols-2">
+        {
+          previous && (
+            <a href={lessonPath(previous)} class="rounded-lg border border-line p-4 hover:border-accent">
+              <span class="font-mono text-xs tracking-wide text-muted uppercase">Anterior</span>
+              <span class="mt-2 block font-semibold">{previous.data.title}</span>
+            </a>
+          )
+        }
+        {
+          next && (
+            <a
+              href={lessonPath(next)}
+              class:list={[
+                'rounded-lg border border-line p-4 hover:border-accent sm:text-right',
+                !previous && 'sm:col-start-2',
+              ]}
+            >
+              <span class="font-mono text-xs tracking-wide text-muted uppercase">Siguiente</span>
+              <span class="mt-2 block font-semibold">{next.data.title}</span>
+            </a>
+          )
+        }
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
