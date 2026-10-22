@@ -1,6 +1,6 @@
 # Portafolio de Ivan Garcia Vega
 
-Sitio personal en Astro 5, salida estática. La versión publicada anterior queda en `legacy-v1/` y el build la copia a `dist/legacy-v1/` para que siga disponible en `/legacy-v1`.
+Sitio personal en Astro 7, salida estática. La versión publicada anterior queda en `legacy-v1/` y el build la copia a `dist/legacy-v1/` para que siga disponible en `/legacy-v1`.
 
 ## Requisitos
 
@@ -10,13 +10,13 @@ Node.js 22 o superior.
 
 ```bash
 npm install
-npm run check    # TypeScript strict, con una sola versión de Vite
+npm run check    # genera los tipos de Astro y luego ejecuta tsc
 npm run dev      # http://localhost:4321
 npm run build    # genera dist/ y copia legacy-v1
 npm run preview  # sirve dist/ en local
 ```
 
-Vite queda fijado en 6.4.5, la línea que usa Astro. Así el plugin de Tailwind y `tsc` resuelven el mismo compilador.
+`npm run check` ejecuta `astro sync` antes de `tsc`. En un checkout limpio esa carpeta `.astro/` no existe, y sin ella las colecciones quedan sin tipo.
 
 ## Contenido
 

@@ -1,7 +1,8 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z, type RefinementCtx } from 'astro/zod';
 
-function rejectDuplicates(values: string[], path: string, ctx: z.RefinementCtx): void {
+function rejectDuplicates(values: string[], path: string, ctx: RefinementCtx): void {
   const seen = new Set<string>();
   values.forEach((value, index) => {
     const key = value.toLocaleLowerCase('es');
