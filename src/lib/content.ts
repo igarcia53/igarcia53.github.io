@@ -136,6 +136,27 @@ export async function getLessons(courseId?: string): Promise<Lesson[]> {
   });
 }
 
+export function projectListItem(project: Project) {
+  const { image, imageWidth, imageHeight, title } = project.data;
+  return {
+    href: `/projects/${project.id}/`,
+    title,
+    summary: project.data.summary,
+    date: project.data.date,
+    tags: project.data.tags,
+    featured: project.data.featured,
+    image:
+      image && imageWidth && imageHeight
+        ? {
+            src: image,
+            width: imageWidth,
+            height: imageHeight,
+            alt: `Captura de ${title}`,
+          }
+        : undefined,
+  };
+}
+
 export function collectTags(entries: { data: { tags: string[] } }[]): string[] {
   const tags = new Set<string>();
   for (const entry of entries) {

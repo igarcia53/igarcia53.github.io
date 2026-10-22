@@ -39,7 +39,7 @@ const count = `${items.length} ${items.length === 1 ? noun.one : noun.many}`;
       <p class="mt-6 text-muted">{empty}</p>
     ) : (
       <ul class="mt-4 grid gap-4">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <EntryCard
             href={item.href}
             title={item.title}
@@ -49,6 +49,7 @@ const count = `${items.length} ${items.length === 1 ? noun.one : noun.many}`;
             tags={item.tags}
             featured={item.featured}
             image={item.image}
+            priority={index === 0}
           />
         ))}
       </ul>

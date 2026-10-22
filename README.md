@@ -10,10 +10,13 @@ Node.js 22 o superior.
 
 ```bash
 npm install
+npm run check    # TypeScript strict, con una sola versión de Vite
 npm run dev      # http://localhost:4321
 npm run build    # genera dist/ y copia legacy-v1
 npm run preview  # sirve dist/ en local
 ```
+
+Vite queda fijado en 6.4.5, la línea que usa Astro. Así el plugin de Tailwind y `tsc` resuelven el mismo compilador.
 
 ## Contenido
 

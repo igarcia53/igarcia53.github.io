@@ -8,9 +8,13 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "check": "tsc --noEmit --pretty false",
     "build": "astro build && node scripts/copy-legacy.mjs",
     "preview": "astro preview",
     "astro": "astro"
+  },
+  "overrides": {
+    "vite": "6.4.5"
   },
   "dependencies": {
     "@astrojs/mdx": "4.3.14",
@@ -18,5 +22,8 @@
     "@tailwindcss/vite": "4.3.3",
     "astro": "5.18.2",
     "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "vite": "6.4.5"
   }
 }

@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /legacy-v1/
-
-Sitemap: https://igarcia53.github.io/sitemap-index.xml

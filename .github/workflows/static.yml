@@ -27,14 +27,29 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
+      - name: Check
+        run: npm run check
       - name: Build
         run: npm run build
       - name: Verify artifact
         run: |
           test -s dist/index.html
+          test -s dist/work/index.html
+          test -s dist/projects/index.html
+          test -s dist/blog/index.html
+          test -s dist/learn/index.html
           test -s dist/legacy-v1/index.html
           test -s dist/sitemap-index.xml
+          test -s dist/sitemap-0.xml
           test -s dist/rss.xml
+          test -s dist/robots.txt
+          test -s dist/404.html
+          test -s dist/open-graph.png
+          test ! -e dist/blog/notas-de-arquitectura/index.html
+          test ! -e dist/projects/borrador-interno/index.html
+          test ! -e dist/learn/borrador-nube/index.html
+          test ! -e dist/learn/componentes-moodle/03-notas/index.html
+          if grep -q '/404' dist/sitemap-0.xml; then exit 1; fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

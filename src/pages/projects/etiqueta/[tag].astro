@@ -2,7 +2,7 @@
 import CollectionIndex from '../../../components/CollectionIndex.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { collectTags, filterByTag, getProjects } from '../../../lib/content';
+import { collectTags, filterByTag, getProjects, projectListItem } from '../../../lib/content';
 import { tagSlug } from '../../../lib/format';
 
 export async function getStaticPaths() {
@@ -18,14 +18,10 @@ interface Props {
 }
 
 const { tag } = Astro.props;
-const projects = filterByTag(await getProjects(), tagSlug(tag));
-const items = projects.map((project) => ({
-  href: `/projects/${project.id}/`,
-  title: project.data.title,
-  summary: project.data.summary,
-  date: project.data.date,
-  tags: project.data.tags,
-}));
+const projects = filterByTag(await getProjects(), tagSlug(tag)).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured),
+);
+const items = projects.map((project) => projectListItem(project));
 ---
 
 <BaseLayout title={`Proyectos: ${tag}`} description={`Proyectos etiquetados con ${tag}.`}>

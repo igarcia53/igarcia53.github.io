@@ -24,7 +24,11 @@ const rendered = await Promise.all(
     description="Del rol más reciente al más antiguo. Cada puesto queda en la línea de tiempo con su periodo, la organización y el sistema sobre el que trabajé."
   />
   <div class="mx-auto max-w-5xl px-5 py-12">
-    <ol class="space-y-10">
+    {
+      rendered.length === 0 ? (
+        <p class="text-muted">No hay puestos publicados.</p>
+      ) : (
+        <ol class="space-y-10">
       {
         rendered.map(({ job, Content }) => (
           <li class="relative border-l border-line pl-6">
@@ -47,6 +51,8 @@ const rendered = await Promise.all(
           </li>
         ))
       }
-    </ol>
+        </ol>
+      )
+    }
   </div>
 </BaseLayout>

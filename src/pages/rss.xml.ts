@@ -9,6 +9,7 @@ export async function GET(context: APIContext): Promise<Response> {
   }
 
   const posts = await getPosts();
+  const lastBuild = posts[0]?.data.date;
   const origin = context.site;
   const self = new URL('/rss.xml', origin).href;
 
@@ -37,7 +38,7 @@ ${categories}
     <atom:link href="${escapeXml(self)}" rel="self" type="application/rss+xml"/>
     <description>${escapeXml(site.description)}</description>
     <language>${site.locale}</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+${lastBuild ? `    <lastBuildDate>${lastBuild.toUTCString()}</lastBuildDate>\n` : ''}
 ${items}
   </channel>
 </rss>

@@ -65,7 +65,11 @@ const personId = new URL('/#ivan', origin).href;
     <div class="prose mt-8 max-w-3xl">
       <Content />
     </div>
-    <div class="mt-12 max-w-3xl space-y-10">
+    {
+      moduleGroups.length === 0 ? (
+        <p class="mt-12 max-w-3xl text-muted">Este curso todavía no tiene lecciones publicadas.</p>
+      ) : (
+        <div class="mt-12 max-w-3xl space-y-10">
       {
         moduleGroups.map((group) => (
           <section aria-labelledby={group.headingId}>
@@ -94,6 +98,8 @@ const personId = new URL('/#ivan', origin).href;
           </section>
         ))
       }
-    </div>
+        </div>
+      )
+    }
   </article>
 </BaseLayout>

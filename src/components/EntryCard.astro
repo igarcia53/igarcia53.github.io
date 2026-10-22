@@ -17,9 +17,11 @@ interface Props {
   tags?: string[];
   featured?: boolean;
   image?: Image;
+  priority?: boolean;
 }
 
-const { href, title, summary, meta, metaDate, tags = [], featured = false, image } = Astro.props;
+const { href, title, summary, meta, metaDate, tags = [], featured = false, image, priority = false } =
+  Astro.props;
 ---
 
 <li>
@@ -31,7 +33,8 @@ const { href, title, summary, meta, metaDate, tags = [], featured = false, image
           alt={image.alt}
           width={image.width}
           height={image.height}
-          loading="lazy"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : undefined}
           decoding="async"
           class="aspect-video w-full border-b border-line bg-soft object-contain"
         />
