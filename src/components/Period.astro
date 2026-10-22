@@ -1,0 +1,17 @@
+---
+import { formatMonth, isoDate } from '../lib/format';
+
+interface Props {
+  start: Date;
+  end?: Date;
+}
+
+const { start, end } = Astro.props;
+---
+
+<p class="font-mono text-xs tracking-wide text-muted uppercase">
+  <time datetime={isoDate(start)}>{formatMonth(start)}</time>
+  <span class="sr-only"> hasta </span>
+  <span aria-hidden="true"> — </span>
+  {end ? <time datetime={isoDate(end)}>{formatMonth(end)}</time> : <span>actualidad</span>}
+</p>

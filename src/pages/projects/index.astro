@@ -4,13 +4,25 @@ import PageHeader from '../../components/PageHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { collectTags, getProjects } from '../../lib/content';
 
-const projects = await getProjects();
+const projects = [...(await getProjects())].sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured),
+);
 const items = projects.map((project) => ({
   href: `/projects/${project.id}/`,
   title: project.data.title,
   summary: project.data.summary,
   date: project.data.date,
   tags: project.data.tags,
+  featured: project.data.featured,
+  image:
+    project.data.image && project.data.imageWidth && project.data.imageHeight
+      ? {
+          src: project.data.image,
+          width: project.data.imageWidth,
+          height: project.data.imageHeight,
+          alt: `Captura de ${project.data.title}`,
+        }
+      : undefined,
 }));
 ---
 

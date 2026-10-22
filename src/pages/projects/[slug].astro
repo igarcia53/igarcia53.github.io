@@ -1,9 +1,10 @@
 ---
 import { render } from 'astro:content';
-import { getProjects, neighbors, type Project } from '../../lib/content';
-import { formatDate } from '../../lib/format';
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import Neighbors from '../../components/Neighbors.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, neighbors, type Project } from '../../lib/content';
+import { formatDate, isoDate, tagSlug } from '../../lib/format';
+import { requireSite } from '../../lib/origin';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -21,13 +22,38 @@ const { project } = Astro.props;
 const projects = await getProjects();
 const { newer, older } = neighbors(projects, project.id);
 const { Content } = await render(project);
+const description = project.data.summary || project.data.title;
+const origin = requireSite(Astro.site);
+const personId = new URL('/#ivan', origin).href;
+const pageUrl = new URL(Astro.url.pathname, origin).href;
 ---
 
-<BaseLayout title={project.data.title} description={project.data.summary || project.data.title} ogType="article">
+<BaseLayout
+  title={project.data.title}
+  description={description}
+  image={project.data.image}
+  imageAlt={project.data.image ? `Captura de ${project.data.title}` : undefined}
+  imageWidth={project.data.imageWidth}
+  imageHeight={project.data.imageHeight}
+  ogType="article"
+  extraGraph={[
+    {
+      '@type': 'CreativeWork',
+      name: project.data.title,
+      description,
+      datePublished: project.data.date.toISOString(),
+      url: pageUrl,
+      author: { '@id': personId },
+      ...(project.data.image ? { image: new URL(project.data.image, origin).href } : {}),
+    },
+  ]}
+>
   <article class="mx-auto max-w-5xl px-5 py-12">
     <div class="max-w-3xl">
       <a href="/projects/" class="text-sm text-accent underline underline-offset-4">Volver a proyectos</a>
-      <p class="mt-8 font-mono text-xs tracking-wide text-muted uppercase">{formatDate(project.data.date)}</p>
+      <time class="mt-8 block font-mono text-xs tracking-wide text-muted uppercase" datetime={isoDate(project.data.date)}>
+        {formatDate(project.data.date)}
+      </time>
       <h1 class="mt-3 text-4xl font-semibold tracking-tight text-balance">{project.data.title}</h1>
       {project.data.role && <p class="mt-3 text-accent">{project.data.role}</p>}
       {project.data.summary && <p class="mt-4 text-lg text-pretty text-muted">{project.data.summary}</p>}
@@ -43,8 +69,13 @@ const { Content } = await render(project);
         project.data.tags.length > 0 && (
           <ul class="mt-4 flex flex-wrap gap-2">
             {project.data.tags.map((tag) => (
-              <li class="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] tracking-wide text-muted uppercase">
-                {tag}
+              <li>
+                <a
+                  href={`/projects/etiqueta/${tagSlug(tag)}/`}
+                  class="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] tracking-wide text-muted uppercase hover:text-ink"
+                >
+                  {tag}
+                </a>
               </li>
             ))}
           </ul>
@@ -83,6 +114,7 @@ const { Content } = await render(project);
             alt={`Captura de ${project.data.title}`}
             width={project.data.imageWidth}
             height={project.data.imageHeight}
+            decoding="async"
             class="mt-8 w-full rounded-lg border border-line"
           />
         )

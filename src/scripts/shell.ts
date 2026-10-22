@@ -1,3 +1,5 @@
+import { paper } from './theme';
+
 const THEME_KEY = 'theme';
 
 function currentTheme(): 'light' | 'dark' {
@@ -9,13 +11,14 @@ function paintTheme(theme: 'light' | 'dark') {
   root.classList.toggle('dark', theme === 'dark');
   root.classList.toggle('light', theme === 'light');
   root.style.colorScheme = theme;
-  root.style.backgroundColor = theme === 'dark' ? '#121412' : '#f3f0e8';
+  root.style.backgroundColor = theme === 'dark' ? paper.dark : paper.light;
   document.querySelector('meta[name="theme-color"]')?.setAttribute(
     'content',
-    theme === 'dark' ? '#121412' : '#f3f0e8',
+    theme === 'dark' ? paper.dark : paper.light,
   );
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     button.setAttribute('aria-pressed', String(theme === 'dark'));
+    button.setAttribute('aria-label', theme === 'dark' ? 'Usar tema claro' : 'Usar tema oscuro');
   });
 }
 
@@ -28,6 +31,8 @@ function setMenuOpen(open: boolean) {
   button.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   button.classList.toggle('is-open', open);
   document.body.classList.toggle('overflow-hidden', open);
+  document.getElementById('contenido')?.toggleAttribute('inert', open);
+  document.querySelector('body > footer')?.toggleAttribute('inert', open);
   if (open) {
     drawer.querySelector<HTMLElement>('a, button')?.focus();
   } else if (document.activeElement instanceof Node && drawer.contains(document.activeElement)) {

@@ -29,6 +29,12 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Verify artifact
+        run: |
+          test -s dist/index.html
+          test -s dist/legacy-v1/index.html
+          test -s dist/sitemap-index.xml
+          test -s dist/rss.xml
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

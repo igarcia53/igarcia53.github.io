@@ -9,6 +9,13 @@ interface Item {
   summary: string;
   date: Date;
   tags: string[];
+  featured?: boolean;
+  image?: {
+    src: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
 }
 
 interface Props {
@@ -38,7 +45,10 @@ const count = `${items.length} ${items.length === 1 ? noun.one : noun.many}`;
             title={item.title}
             summary={item.summary}
             meta={formatDate(item.date)}
+            metaDate={item.date}
             tags={item.tags}
+            featured={item.featured}
+            image={item.image}
           />
         ))}
       </ul>

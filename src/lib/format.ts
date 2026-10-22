@@ -15,10 +15,12 @@ export function formatDate(date: Date): string {
   return fullDate.format(date);
 }
 
-export function formatPeriod(start: Date, end?: Date): string {
-  const startLabel = monthYear.format(start);
-  const endLabel = end ? monthYear.format(end) : 'actualidad';
-  return `${startLabel} — ${endLabel}`;
+export function formatMonth(date: Date): string {
+  return monthYear.format(date);
+}
+
+export function isoDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
 }
 
 export function tagSlug(tag: string): string {

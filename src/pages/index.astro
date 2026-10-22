@@ -1,9 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryCard from '../components/EntryCard.astro';
+import Period from '../components/Period.astro';
 import { site, skills } from '../data/site';
 import { getCourses, getJobs, getLessons, getPosts, getProjects } from '../lib/content';
-import { formatDate, formatPeriod, levelLabel } from '../lib/format';
+import { formatDate, levelLabel } from '../lib/format';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 const projects = await getProjects();
 const posts = await getPosts();
@@ -25,14 +26,14 @@ const courseCards = await Promise.all(
 <BaseLayout title={site.name} description={site.description}>
   <section class="border-b border-line">
     <div class="mx-auto max-w-5xl px-5 py-16 md:py-24">
-      <p class="font-mono text-xs tracking-widest text-accent uppercase">Sistemas, LMS y EdTech</p>
-      <h1 class="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
+      <p class="font-mono text-xs tracking-widest text-accent uppercase">Arquitectura, LMS e infraestructura</p>
+      <h1 id="ivan" class="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
         {site.name}
       </h1>
       <p class="mt-4 text-xl">{site.role}</p>
       <p class="mt-4 max-w-2xl text-lg text-pretty text-muted">
-        Desarrollo plataformas educativas y las integraciones que las conectan con el resto de la operación:
-        PHP, JavaScript, LMS y bases de datos.
+        Uno la arquitectura de software con el trabajo sobre LMS: diseño integraciones, desarrollo las
+        plataformas y dejo la infraestructura lista para operarlas.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="/work/" class="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper">Ver trayectoria</a>
@@ -46,17 +47,16 @@ const courseCards = await Promise.all(
     <h2 id="enfoque" class="text-2xl font-semibold tracking-tight">Enfoque</h2>
     <div class="mt-6 max-w-3xl space-y-4 text-pretty">
       <p>
-        Ingeniero en Sistemas Computacionales con más de 10 años de experiencia en el sector e-learning,
-        especializado en el desarrollo de plataformas educativas. Como desarrollador senior Moodle en UVirtual,
-        y con experiencia previa en SAEKO y Cypher Learning como especialista PHP y EdTech Specialist, he
-        aportado soluciones tecnológicas a nivel global. Mi trabajo incluye PHP, Laravel, desarrollo de LMS,
-        bases de datos (MySQL, SQL Server), integración con Ruby y JavaScript, y APIs. Tengo la certificación
-        internacional MCCC en Moodle y he trabajado con herramientas colaborativas como Google Workspace.
+        Ingeniero en Sistemas Computacionales con más de 10 años en e-learning. El trabajo recorre tres capas
+        del mismo sistema: la arquitectura de las integraciones y las APIs, el desarrollo sobre LMS (PHP,
+        Laravel, JavaScript, Ruby, MySQL y SQL Server) y la infraestructura de esos entornos (Docker, Git y
+        WSL).
       </p>
       <p>
-        La trayectoria combina equipos multidisciplinarios y sistemas que tienen que servir tanto a la
-        organización como a quien aprende. Sigo buscando proyectos donde esa experiencia se aplique con
-        criterio.
+        En UVirtual desarrollo componentes de Moodle. Antes, en SAEKO, diseñé arquitecturas de integración con
+        PHP y Ruby. En Cypher Learning el foco fue la operación de programas formativos con clientes, soporte
+        y educación. La certificación MCCC en Moodle y el uso de Google Workspace forman parte de ese
+        recorrido.
       </p>
     </div>
     <p class="mt-6">
@@ -74,8 +74,10 @@ const courseCards = await Promise.all(
   <section class="border-t border-line" aria-labelledby="oficio">
     <div class="mx-auto max-w-5xl px-5 py-16">
       <h2 id="oficio" class="text-2xl font-semibold tracking-tight">Oficio</h2>
-      <p class="mt-3 max-w-2xl text-muted">Herramientas que aparecen en el trabajo publicado.</p>
-      <dl class="mt-8 grid gap-6 sm:grid-cols-2">
+      <p class="mt-3 max-w-2xl text-muted">
+        Capas del mismo oficio: arquitectura, desarrollo, datos, infraestructura y plataformas.
+      </p>
+      <dl class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
           skills.map((group) => (
             <div class="rounded-lg border border-line p-4">
@@ -103,7 +105,9 @@ const courseCards = await Promise.all(
               title={project.data.title}
               summary={project.data.summary}
               meta={formatDate(project.data.date)}
+              metaDate={project.data.date}
               tags={project.data.tags}
+              featured={project.data.featured}
             />
           ))
         }
@@ -121,9 +125,7 @@ const courseCards = await Promise.all(
         {
           jobPreview.map((job) => (
             <li class="border-l border-line pl-6">
-              <p class="font-mono text-xs tracking-wide text-muted uppercase">
-                {formatPeriod(job.data.startDate, job.data.endDate)}
-              </p>
+              <Period start={job.data.startDate} end={job.data.endDate} />
               <h3 class="mt-2 text-xl font-semibold tracking-tight">{job.data.title}</h3>
               <p class="text-accent">{job.data.company}</p>
               {job.data.summary && <p class="mt-2 max-w-3xl text-pretty text-muted">{job.data.summary}</p>}
@@ -175,6 +177,7 @@ const courseCards = await Promise.all(
               title={post.data.title}
               summary={post.data.summary}
               meta={formatDate(post.data.date)}
+              metaDate={post.data.date}
               tags={post.data.tags}
             />
           ))

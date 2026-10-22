@@ -2,14 +2,9 @@
 import { render } from 'astro:content';
 import LessonProgress from '../../components/LessonProgress.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import {
-  getCourses,
-  getLessons,
-  groupLessons,
-  lessonPath,
-  type Course,
-} from '../../lib/content';
-import { kindLabel, levelLabel } from '../../lib/format';
+import { getCourses, getLessons, groupLessons, lessonPath, type Course } from '../../lib/content';
+import { kindLabel, levelLabel, tagSlug } from '../../lib/format';
+import { requireSite } from '../../lib/origin';
 
 export async function getStaticPaths() {
   const courses = await getCourses();
@@ -26,10 +21,36 @@ interface Props {
 const { course } = Astro.props;
 const lessons = await getLessons(course.id);
 const modules = groupLessons(course, lessons);
+const moduleGroups = modules.map((group, index) => {
+  const baseId = `modulo-${tagSlug(group.module) || 'modulo'}`;
+  const duplicated =
+    modules.filter((item) => tagSlug(item.module) === tagSlug(group.module)).length > 1;
+  return {
+    ...group,
+    headingId: duplicated ? `${baseId}-${index + 1}` : baseId,
+  };
+});
 const { Content } = await render(course);
+const description = course.data.summary || course.data.title;
+const origin = requireSite(Astro.site);
+const personId = new URL('/#ivan', origin).href;
 ---
 
-<BaseLayout title={course.data.title} description={course.data.summary || course.data.title}>
+<BaseLayout
+  title={course.data.title}
+  description={description}
+  extraGraph={[
+    {
+      '@type': 'Course',
+      name: course.data.title,
+      description,
+      url: new URL(Astro.url.pathname, origin).href,
+      inLanguage: 'es',
+      provider: { '@id': personId },
+      teaches: course.data.tags,
+    },
+  ]}
+>
   <article class="mx-auto max-w-5xl px-5 py-12">
     <a href="/learn/" class="text-sm text-accent underline underline-offset-4">Volver a EdTech</a>
     <p class="mt-8 font-mono text-xs tracking-wide text-muted uppercase">
@@ -46,9 +67,9 @@ const { Content } = await render(course);
     </div>
     <div class="mt-12 max-w-3xl space-y-10">
       {
-        modules.map((group) => (
-          <section aria-labelledby={`modulo-${group.module}`}>
-            <h2 id={`modulo-${group.module}`} class="text-2xl font-semibold tracking-tight">
+        moduleGroups.map((group) => (
+          <section aria-labelledby={group.headingId}>
+            <h2 id={group.headingId} class="text-2xl font-semibold tracking-tight">
               {group.module}
             </h2>
             <ol class="mt-4 divide-y divide-line border-y border-line">

@@ -1,15 +1,10 @@
 ---
-import { render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import LessonProgress from '../../../components/LessonProgress.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import {
-  getCourses,
-  getLessons,
-  lessonPath,
-  lessonSlug,
-  type Lesson,
-} from '../../../lib/content';
+import { getCourses, getLessons, lessonPath, lessonSlug, type Lesson } from '../../../lib/content';
 import { kindLabel } from '../../../lib/format';
+import { requireSite } from '../../../lib/origin';
 
 export async function getStaticPaths() {
   const courses = await getCourses();
@@ -28,18 +23,46 @@ interface Props {
 }
 
 const { lesson } = Astro.props;
+const course = await getEntry('courses', lesson.data.course);
+if (!course || course.data.draft) {
+  throw new Error(`La lección ${lesson.id} no tiene un curso publicado.`);
+}
 const courseLessons = await getLessons(lesson.data.course);
 const index = courseLessons.findIndex((item) => item.id === lesson.id);
 const previous = index > 0 ? courseLessons[index - 1] : undefined;
 const next = courseLessons[index + 1];
 const { Content } = await render(lesson);
+const description = lesson.data.summary || lesson.data.title;
+const origin = requireSite(Astro.site);
+const personId = new URL('/#ivan', origin).href;
+const coursePath = `/learn/${course.id}/`;
+const courseUrl = new URL(coursePath, origin).href;
 ---
 
-<BaseLayout title={lesson.data.title} description={lesson.data.summary || lesson.data.title}>
+<BaseLayout
+  title={lesson.data.title}
+  description={description}
+  extraGraph={[
+    {
+      '@type': 'LearningResource',
+      name: lesson.data.title,
+      description,
+      url: new URL(Astro.url.pathname, origin).href,
+      inLanguage: 'es',
+      learningResourceType: kindLabel[lesson.data.kind],
+      isPartOf: {
+        '@type': 'Course',
+        name: course.data.title,
+        url: courseUrl,
+      },
+      author: { '@id': personId },
+    },
+  ]}
+>
   <article class="mx-auto max-w-5xl px-5 py-12">
     <div class="max-w-3xl">
-      <a href={`/learn/${lesson.data.course}/`} class="text-sm text-accent underline underline-offset-4">
-        Volver al módulo
+      <a href={coursePath} class="text-sm text-accent underline underline-offset-4">
+        Volver a {course.data.title}
       </a>
       <p class="mt-8 font-mono text-xs tracking-wide text-muted uppercase">
         {kindLabel[lesson.data.kind]}

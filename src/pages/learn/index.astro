@@ -25,7 +25,12 @@ const cards = await Promise.all(
   <div class="mx-auto max-w-5xl px-5 py-12">
     <ul class="grid gap-4">
       {
-        cards.map(({ course, lessons }) => (
+        cards.length === 0 ? (
+          <li>
+            <p class="text-muted">No hay cursos publicados.</p>
+          </li>
+        ) : (
+          cards.map(({ course, lessons }) => (
           <li>
             <a href={`/learn/${course.id}/`} class="block rounded-lg border border-line p-5 hover:border-accent">
               <p class="font-mono text-xs tracking-wide text-muted uppercase">
@@ -48,7 +53,8 @@ const cards = await Promise.all(
               }
             </a>
           </li>
-        ))
+          ))
+        )
       }
     </ul>
   </div>
